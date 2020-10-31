@@ -1,0 +1,15 @@
+App\Domain\GhaImport\CommitComment:
+    type: entity
+    table: commit_comment
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        createdAt:
+            type: datetime
+        commitMessage:
+            type: text
+            options:
+                collation: utf8mb4_unicode_ci

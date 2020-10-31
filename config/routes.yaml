@@ -1,5 +1,5 @@
 api_commit_comments:
     path: /commit-comments
-    controller: App\Infrastructure\Controller\GHA\CommitComments
+    controller: App\Infrastructure\Controller\GHA\GetCommitComments
     methods: ['POST']
     host: "%api_host%"
