@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Infrastructure\Controller\GHA;
+namespace App\Infrastructure\Controller\Gha;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

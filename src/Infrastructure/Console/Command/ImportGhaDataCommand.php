@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Infrastructure\Console\Command;
 
 use App\Application\GhaImport\Command\CreateCommitCommentFromImportLine;
+use App\Domain\GhaImport\CommitCommentRepositoryInterface;
 use DateTime;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -21,16 +22,16 @@ final class ImportGhaDataCommand extends Command
     /** @var HttpClientInterface */
     private $client;
 
-    /** @var MessageBusInterface */
-    private $bus;
+    /** @var CommitCommentRepositoryInterface */
+    private $commitCommentRepository;
 
     public function __construct(
         HttpClientInterface $client,
-        MessageBusInterface $bus
+        CommitCommentRepositoryInterface $commitCommentRepository
     ) {
         parent::__construct();
         $this->client = $client;
-        $this->bus = $bus;
+        $this->commitCommentRepository = $commitCommentRepository;
     }
 
     protected function configure()
@@ -63,16 +64,14 @@ final class ImportGhaDataCommand extends Command
             $importItemContainer = array_filter($data, function($ghaLine) use ($currentParsingDate): ?CreateCommitCommentFromImportLine {
                 $decodedLine = json_decode($ghaLine);
                 if ('CommitCommentEvent' === $decodedLine->type) {
-                    return new CreateCommitCommentFromImportLine(
+                    $newLine = new CreateCommitCommentFromImportLine(
                         $currentParsingDate,
                         $decodedLine->payload->comment->body
                     );
+                    return $newLine;
                 }
                 return null;
             });
-            foreach ($importItemContainer as $value) {
-                $output->writeln($value->commitComment);
-            }
         } catch (Exception $e) {
             $output->writeln('oups');
             throw $e;

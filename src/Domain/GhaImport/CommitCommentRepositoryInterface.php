@@ -6,9 +6,9 @@ namespace App\Domain\GhaImport;
 
 use Doctrine\Common\Collections\Collection;
 
-interface ImportRepositoryInterface
+interface CommitCommentRepositoryInterface
 {
-    public function add(CommitComment $import);
+    public function add(CommitComment $commitComment): void;
 
     public function findCommitCommentsByDateAndKeyword(\DateTimeInterface $dateFilter, string $keyword): ?Collection;
 }
