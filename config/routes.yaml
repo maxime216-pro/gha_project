@@ -1,3 +1,5 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+api_commit_comments:
+    path: /commit-comments
+    controller: App\Infrastructure\Controller\GHA\CommitComments
+    methods: ['POST']
+    host: "%api_host%"
