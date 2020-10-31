@@ -12,3 +12,4 @@
 ###> vscode
 gha_project.code-workspace
 ###< vscode
+.env.dev
