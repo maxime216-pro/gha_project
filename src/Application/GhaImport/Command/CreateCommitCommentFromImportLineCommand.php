@@ -6,7 +6,7 @@ namespace App\Application\GhaImport\Command;
 
 use DateTimeInterface;
 
-final class CreateCommitCommentFromImportLine
+final class CreateCommitCommentFromImportLineCommand
 {
     /** @var DateTimeInterface */
     public $createdAt;

@@ -28,3 +28,17 @@ services:
 
     App\Infrastructure\Doctrine\Repository\:
         resource: ../src/Infrastructure/Doctrine/Repository/*'
+
+    command_handlers:
+        namespace: App\Application\
+        resource: '%kernel.project_dir%/src/Application/**/Handler/*CommandHandler.php'
+        autoconfigure: false
+        tags:
+            - { name: messenger.message_handler, bus: command.bus }
+    
+    query_handlers:
+        namespace: App\Application\
+        resource: '%kernel.project_dir%/src/Application/**/Handler/*QueryHandler.php'
+        autoconfigure: false
+        tags:
+            - { name: messenger.message_handler, bus: query.bus }

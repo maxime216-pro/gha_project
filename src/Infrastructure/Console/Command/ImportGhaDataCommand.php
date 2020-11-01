@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Infrastructure\Console\Command;
 
-use App\Application\GhaImport\Command\CreateCommitCommentFromImportLine;
-use App\Domain\GhaImport\CommitCommentRepositoryInterface;
+use App\Application\GhaImport\Command\CreateCommitCommentFromImportLineCommand;
 use DateTime;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -22,16 +21,16 @@ final class ImportGhaDataCommand extends Command
     /** @var HttpClientInterface */
     private $client;
 
-    /** @var CommitCommentRepositoryInterface */
-    private $commitCommentRepository;
+    /** @var MessageBusInterface */
+    private $commandBus;
 
     public function __construct(
         HttpClientInterface $client,
-        CommitCommentRepositoryInterface $commitCommentRepository
+        MessageBusInterface $commandBus
     ) {
         parent::__construct();
         $this->client = $client;
-        $this->commitCommentRepository = $commitCommentRepository;
+        $this->commandBus = $commandBus;
     }
 
     protected function configure()
@@ -41,7 +40,7 @@ final class ImportGhaDataCommand extends Command
             ->addOption('startDate', 's', InputOption::VALUE_OPTIONAL, "Import starting date (required format : 'Y-m-d H')");
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($rawStartDate = $input->getOption('startDate')) {
             $currentParsingDate = DateTime::createFromFormat('Y-m-d H', $rawStartDate);
@@ -61,20 +60,21 @@ final class ImportGhaDataCommand extends Command
         }
 
         try {
-            $importItemContainer = array_filter($data, function($ghaLine) use ($currentParsingDate): ?CreateCommitCommentFromImportLine {
-                $decodedLine = json_decode($ghaLine);
+            for ($i = 0, $counter = count($data)-1; $i < $counter; ++$i) {
+                $decodedLine = json_decode($data[$i]);
                 if ('CommitCommentEvent' === $decodedLine->type) {
-                    $newLine = new CreateCommitCommentFromImportLine(
-                        $currentParsingDate,
+                    $newLine = new CreateCommitCommentFromImportLineCommand(
+                        new DateTime($decodedLine->payload->comment->created_at),
                         $decodedLine->payload->comment->body
                     );
-                    return $newLine;
+                    $this->commandBus->dispatch($newLine);
                 }
-                return null;
-            });
+            }
         } catch (Exception $e) {
             $output->writeln('oups');
             throw $e;
         }
+
+        return 0;
     }
 }
