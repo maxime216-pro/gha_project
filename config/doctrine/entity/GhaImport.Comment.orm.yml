@@ -1,6 +1,6 @@
-App\Domain\GhaImport\CommitComment:
+App\Domain\GhaImport\Comment:
     type: entity
-    table: commit_comment
+    table: comment
     id:
         id:
             type: integer
@@ -9,7 +9,11 @@ App\Domain\GhaImport\CommitComment:
     fields:
         createdAt:
             type: datetime
-        commitMessage:
+        repoName:
+            type: string
+        message:
             type: text
             options:
                 collation: utf8mb4_unicode_ci
+        commitId:
+            type: string

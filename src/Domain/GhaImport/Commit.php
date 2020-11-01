@@ -6,7 +6,7 @@ namespace App\Domain\GhaImport;
 
 use DateTimeInterface;
 
-final class CommitComment
+final class Commit
 {
     /** @var int */
     private $id;
@@ -15,14 +15,22 @@ final class CommitComment
     private $createdAt;
 
     /** @var string */
-    private $commitMessage;
+    private $message;
+
+    /** @var string */
+    private $commitId;
+
+    /** @var PushEvent */
+    private $pushEvent;
 
     final public function __construct(
         \DateTimeInterface $createdAt,
-        string $commitMessage
+        string $message,
+        string $commitId
     ) {
         $this->createdAt = $createdAt;
-        $this->commitMessage = $commitMessage;
+        $this->message = $message;
+        $this->commitId = $commitId;
     }
 
     public function getCreatedAt(): DateTimeInterface
@@ -30,8 +38,13 @@ final class CommitComment
         return $this->createdAt;
     }
 
-    public function getCommitMessage(): string
+    public function getMessage(): string
     {
-        return $this->commitMessage;
+        return $this->message;
+    }
+
+    public function getCommitId(): string
+    {
+        return $this->commitId;
     }
 }

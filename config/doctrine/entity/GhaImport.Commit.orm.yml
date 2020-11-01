@@ -1,0 +1,22 @@
+App\Domain\GhaImport\Commit:
+    type: entity
+    table: commit
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        createdAt:
+            type: datetime
+        message:
+            type: text
+            options:
+                collation: utf8mb4_unicode_ci
+        commitId:
+            type: string
+    manyToOne:
+        pushEvent:
+            targetEntity: App\Domain\GhaImport\PushEvent
+            mappedBy: commit
+            orderBy: { createdAt: ASC }

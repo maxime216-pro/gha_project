@@ -1,0 +1,14 @@
+App\Application\GhaImport\Command\CreateCommitFromImportLineCommand:
+    properties:
+        createdAt:
+            - NotBlank: ~
+            - Type: { type: DateTimeInterface }
+            - range:
+                min: '2015-01-01'
+                max: 'now'
+        message:
+            - NotBlank: ~
+            - Type: { type: string }
+        commitId:
+            - NotBlank: ~
+            - Type: { type: string }

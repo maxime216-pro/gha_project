@@ -1,0 +1,18 @@
+App\Domain\GhaImport\PushEvent:
+    type: entity
+    table: push_event
+    id:
+        id:
+            type: integer
+            generator:
+                strategy: AUTO
+    fields:
+        createdAt:
+            type: datetime
+        repoName:
+            type: string
+    oneToMany:
+        commits:
+            targetEntity: App\Domain\GhaImport\Commit
+            mappedBy: pushEvent
+            cascade: ["remove", "persist"]

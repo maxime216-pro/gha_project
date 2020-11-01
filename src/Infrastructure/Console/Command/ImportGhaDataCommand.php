@@ -42,36 +42,41 @@ final class ImportGhaDataCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $nowDate = new DateTime();
         if ($rawStartDate = $input->getOption('startDate')) {
             $currentParsingDate = DateTime::createFromFormat('Y-m-d H', $rawStartDate);
         } else {
             // GitHub started to archive events at this date
-            $currentParsingDate = new DateTime('2020-09-01');
+            $currentParsingDate = new DateTime('2020-10-01 00:00:00');
         }
-        $output->writeln('start date is :' . $currentParsingDate->format('Y-m-d H'));
+        $output->writeln('start date is : ' . $currentParsingDate->format('Y-m-d H'));
         try {
-            $response = $this->client->request('GET', 'http://data.gharchive.org/2015-01-01-12.json.gz');
-            $data = explode(PHP_EOL, gzdecode($response->getContent()));
-            array_pop($data); // last array's element is empty
+            while($currentParsingDate <= $nowDate) {
+                $output->writeln(sprintf('Processing archive for the date : %s', $currentParsingDate->format('Y-m-d-H')));
+                $response = $this->client->request('GET', sprintf('http://data.gharchive.org/%s.json.gz', $currentParsingDate->format('Y-m-d-H')));
+                if ($response->getStatusCode() === 404) {
+                    $output->writeln(sprintf('Archive not found for the date : %s', $currentParsingDate->format('Y-m-d-H')));
+                    $currentParsingDate->modify('+1 hour'); // Be ready to get elements from the next hour
+                    continue;
+                }
+                $data = explode(PHP_EOL, gzdecode($response->getContent())); // Get an array of JSON element
+                // -1 because the last array's element is empty
+                for ($i = 0, $counter = count($data)-1; $i < $counter; ++$i) {
+                    $decodedLine = json_decode($data[$i]);
+                    if ('CommitCommentEvent' === $decodedLine->type) {
+                        $newLine = new CreateCommitCommentFromImportLineCommand(
+                            new DateTime($decodedLine->payload->comment->created_at),
+                            $decodedLine->payload->comment->body
+                        );
+                        $this->commandBus->dispatch($newLine);
+                    }
+                }
+
+                $currentParsingDate->modify('+1 hour'); // Be ready to get elements from the next hour
+            }
         } catch(Exception $e) {
             $output->writeln('Oops an error has occured : ' . $e->getMessage());
 
-            throw $e;
-        }
-
-        try {
-            for ($i = 0, $counter = count($data)-1; $i < $counter; ++$i) {
-                $decodedLine = json_decode($data[$i]);
-                if ('CommitCommentEvent' === $decodedLine->type) {
-                    $newLine = new CreateCommitCommentFromImportLineCommand(
-                        new DateTime($decodedLine->payload->comment->created_at),
-                        $decodedLine->payload->comment->body
-                    );
-                    $this->commandBus->dispatch($newLine);
-                }
-            }
-        } catch (Exception $e) {
-            $output->writeln('oups');
             throw $e;
         }
 

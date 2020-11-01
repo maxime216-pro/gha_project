@@ -1,0 +1,20 @@
+App\Application\GhaImport\Command\CreatePullRequestFromImportLineCommand:
+    properties:
+        createdAt:
+            - NotBlank: ~
+            - Type: { type: DateTimeInterface }
+            - range:
+                min: '2015-01-01'
+                max: 'now'
+        repoName:
+            - NotBlank: ~
+            - Type: { type: string }
+        message:
+            - NotBlank: ~
+            - Type: { type: string }
+        numberOfCommits:
+            - NotBlank: ~
+            - Type: { type: int }
+        numberOfComments:
+            - NotBlank: ~
+            - Type: { type: int }

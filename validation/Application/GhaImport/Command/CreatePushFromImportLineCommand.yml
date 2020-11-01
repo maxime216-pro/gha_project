@@ -1,4 +1,4 @@
-App\Application\GhaImport\Command\CreateCommitCommentFromImportLine:
+App\Application\GhaImport\Command\CreatePushFromImportLineCommand:
     properties:
         createdAt:
             - NotBlank: ~
@@ -6,6 +6,9 @@ App\Application\GhaImport\Command\CreateCommitCommentFromImportLine:
             - range:
                 min: '2015-01-01'
                 max: 'now'
-        commitComment:
+        repoName:
+            - NotBlank: ~
+            - Type: { type: string }
+        message:
             - NotBlank: ~
             - Type: { type: string }
