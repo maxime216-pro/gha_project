@@ -7,8 +7,6 @@ App\Domain\GhaImport\Commit:
             generator:
                 strategy: AUTO
     fields:
-        createdAt:
-            type: datetime
         message:
             type: text
             options:

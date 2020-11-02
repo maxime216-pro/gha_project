@@ -4,7 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Infrastructure\Console\Command;
 
-use App\Application\GhaImport\Command\CreateCommitFromImportLineCommand;
+use App\Domain\GhaImport\Service\GithubEventManagerInterface;
+use App\Infrastructure\GhaImport\Service\GithubEventManager;
 use DateTime;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -24,13 +25,18 @@ final class ImportGhaDataCommand extends Command
     /** @var MessageBusInterface */
     private $commandBus;
 
+    /** @var GithubEventManagerInterface */
+    private $ghEventManager;
+
     public function __construct(
         HttpClientInterface $client,
-        MessageBusInterface $commandBus
+        MessageBusInterface $commandBus,
+        GithubEventManagerInterface $ghEventManager
     ) {
         parent::__construct();
         $this->client = $client;
         $this->commandBus = $commandBus;
+        $this->ghEventManager = $ghEventManager;
     }
 
     protected function configure()
@@ -63,14 +69,9 @@ final class ImportGhaDataCommand extends Command
                 // -1 because the last array's element is empty
                 for ($i = 0, $counter = count($data)-1; $i < $counter; ++$i) {
                     $decodedLine = json_decode($data[$i]);
-                    if ('CommitCommentEvent' === $decodedLine->type) {
-                        $newLine = new CreateCommitFromImportLineCommand(
-                            new DateTime($decodedLine->payload->comment->created_at),
-                            $decodedLine->payload->comment->body
-                        );
-                        
+                    if ($githubEvent = $this->ghEventManager->getEventFromImport($decodedLine)){
+                        $this->commandBus->dispatch($githubEvent);
                     }
-                    $this->commandBus->dispatch($newLine);
                 }
 
                 $currentParsingDate->modify('+1 hour'); // Be ready to get elements from the next hour
