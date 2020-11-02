@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace App\Infrastructure\Console\Command;
 
 use App\Domain\GhaImport\Service\GithubEventManagerInterface;
-use App\Infrastructure\GhaImport\Service\GithubEventManager;
 use DateTime;
 use Exception;
 use Symfony\Component\Console\Command\Command;
