@@ -46,7 +46,7 @@ final class CreatePushFromImportLineCommandHandler
             }
         }
 
-        $this->pushRepository->add($commit);
+        $this->pushRepository->add($pushEvent);
 
         return $commit;
     }

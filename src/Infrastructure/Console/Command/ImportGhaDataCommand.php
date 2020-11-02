@@ -52,7 +52,7 @@ final class ImportGhaDataCommand extends Command
             $currentParsingDate = DateTime::createFromFormat('Y-m-d H', $rawStartDate);
         } else {
             // GitHub started to archive events at this date
-            $currentParsingDate = new DateTime('2020-10-01 00:00:00');
+            $currentParsingDate = new DateTime('2020-11-01 00:00:00');
         }
         $output->writeln('start date is : ' . $currentParsingDate->format('Y-m-d H'));
         try {
