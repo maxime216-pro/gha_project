@@ -1,4 +1,4 @@
-App\Application\GhaImport\Command\CreateCommitFromImportLineCommand:
+App\Application\GhaImport\Dto\CommitDto:
     properties:
         message:
             - NotBlank: ~
