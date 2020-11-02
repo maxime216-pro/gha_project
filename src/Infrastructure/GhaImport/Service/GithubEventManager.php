@@ -16,11 +16,7 @@ final class GithubEventManager implements GithubEventManagerInterface
 {
     private const PULL_REQUEST = 'PullRequestEvent';
     private const PUSH = 'PushEvent';
-    private const COMMENT = [
-        'CommitCommentEvent',
-        'IssueCommentEvent',
-        'PullRequestReviewCommentEvent'
-    ];
+    private const COMMENT = 'CommitCommentEvent';
 
     public function getEventFromImport(object $line): ?Importable
     {
@@ -38,7 +34,7 @@ final class GithubEventManager implements GithubEventManagerInterface
                 $line->payload->pull_request->commits,
                 $line->payload->pull_request->comments
             );
-        } elseif (\in_array($line->type, self::COMMENT)) {
+        } elseif (self::COMMENT === $line->type) {
             return new CreateCommentFromImportLineCommand(
                 new DateTime($line->payload->comment->created_at),
                 $line->repo->name,

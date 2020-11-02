@@ -41,8 +41,8 @@ final class CreatePushFromImportLineCommandHandler
                     $commitDto->message,
                     $commitDto->commitId
                 );
-                $pushEvent->addCommit($commit);
                 $this->commitRepository->add($commit);
+                $pushEvent->addCommit($commit);
             }
         }
 
