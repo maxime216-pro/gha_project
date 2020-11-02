@@ -17,7 +17,7 @@ final class PullRequestEvent
     /** @var string */
     private $repoName;
 
-    /** @var string */
+    /** @var string|null */
     private $message;
 
     /** @var int */
@@ -29,7 +29,7 @@ final class PullRequestEvent
     final public function __construct(
         \DateTimeInterface $createdAt,
         string $repoName,
-        string $message,
+        ?string $message,
         int $numberOfCommits,
         int $numberOfComments
     ) {
@@ -50,7 +50,7 @@ final class PullRequestEvent
         return $this->repoName;
     }
 
-    public function getMessage(): string
+    public function getMessage(): ?string
     {
         return $this->message;
     }

@@ -34,7 +34,7 @@ final class GithubEventManager implements GithubEventManagerInterface
             return new CreatePullRequestFromImportLineCommand(
                 new DateTime($line->created_at),
                 $line->repo->name,
-                $line->payload->pull_request->body,
+                property_exists($line->payload->pull_request, 'body') ? $line->payload->pull_request->body : null,
                 $line->payload->pull_request->commits,
                 $line->payload->pull_request->comments
             );

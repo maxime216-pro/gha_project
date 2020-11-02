@@ -15,7 +15,7 @@ final class CreatePullRequestFromImportLineCommand implements Importable
     /** @var string */
     public $repoName;
 
-    /** @var string */
+    /** @var string|null */
     public $message;
 
     /** @var int */
@@ -27,7 +27,7 @@ final class CreatePullRequestFromImportLineCommand implements Importable
     public function __construct(
         \DateTimeInterface $createdAt,
         string $repoName,
-        string $message,
+        ?string $message,
         int $numberOfCommits,
         int $numberOfComments
     ) {

@@ -15,6 +15,7 @@ App\Domain\GhaImport\PullRequestEvent:
             type: text
             options:
                 collation: utf8mb4_unicode_ci
+            nullable: true
         numberOfCommits:
             type: integer
         numberOfComments:

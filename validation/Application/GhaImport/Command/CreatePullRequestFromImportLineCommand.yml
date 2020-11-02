@@ -10,7 +10,6 @@ App\Application\GhaImport\Command\CreatePullRequestFromImportLineCommand:
             - NotBlank: ~
             - Type: { type: string }
         message:
-            - NotBlank: ~
             - Type: { type: string }
         numberOfCommits:
             - NotBlank: ~
