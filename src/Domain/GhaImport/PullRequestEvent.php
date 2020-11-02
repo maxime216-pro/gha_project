@@ -6,7 +6,7 @@ namespace App\Domain\GhaImport;
 
 use DateTimeInterface;
 
-final class PullRequestEvent
+class PullRequestEvent
 {
     /** @var int */
     private $id;

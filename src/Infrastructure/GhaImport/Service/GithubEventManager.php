@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\GhaImport\Service;
 
-use App\Application\GhaImport\Command\CommitDto;
+use App\Application\GhaImport\Dto\CommitDto;
 use App\Application\GhaImport\Command\CreateCommentFromImportLineCommand;
 use App\Application\GhaImport\Command\CreatePullRequestFromImportLineCommand;
 use App\Application\GhaImport\Command\CreatePushFromImportLineCommand;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\GhaImport\Handler;
 
-use App\Application\GhaImport\Command\CommitDto;
+use App\Application\GhaImport\Dto\CommitDto;
 use App\Application\GhaImport\Command\CreatePushFromImportLineCommand;
 use App\Domain\GhaImport\Commit;
 use App\Domain\GhaImport\CommitRepositoryInterface;

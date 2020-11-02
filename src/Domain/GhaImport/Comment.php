@@ -6,7 +6,7 @@ namespace App\Domain\GhaImport;
 
 use DateTimeInterface;
 
-final class Comment
+class Comment
 {
     /** @var int */
     private $id;

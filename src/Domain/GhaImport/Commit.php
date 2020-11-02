@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Domain\GhaImport;
 
-final class Commit
+class Commit
 {
     /** @var int */
     private $id;

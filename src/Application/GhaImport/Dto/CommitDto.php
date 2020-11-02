@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\GhaImport\Command;
+namespace App\Application\GhaImport\Dto;
 
 final class CommitDto
 {

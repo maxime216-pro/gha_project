@@ -8,7 +8,7 @@ use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-final class PushEvent
+class PushEvent
 {
     /** @var int */
     private $id;

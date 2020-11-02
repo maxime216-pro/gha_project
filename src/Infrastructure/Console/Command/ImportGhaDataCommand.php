@@ -87,6 +87,7 @@ final class ImportGhaDataCommand extends Command
                 }
                 $this->em->flush();
                 $this->em->clear();
+                $output->writeln(sprintf('Processing done for this archive at : %s', (new DateTime())->format('Y-m-d H:i:s')));
                 $currentParsingDate->modify('+1 hour'); // Be ready to get elements from the next hour
             }
         } catch(Exception $e) {
