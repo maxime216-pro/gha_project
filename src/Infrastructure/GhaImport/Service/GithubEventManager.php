@@ -42,8 +42,8 @@ final class GithubEventManager implements GithubEventManagerInterface
             return new CreateCommentFromImportLineCommand(
                 new DateTime($line->payload->comment->created_at),
                 $line->repo->name,
-                $line->repo->body,
-                $line->repo->commit_id,
+                $line->payload->comment->body,
+                $line->payload->comment->commit_id,
             );
         }
 
