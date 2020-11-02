@@ -6,11 +6,11 @@ namespace App\Application\GhaImport\Handler;
 
 use App\Application\GhaImport\Command\CreatePullRequestFromImportLineCommand;
 use App\Domain\GhaImport\PullRequestEvent;
-use App\Domain\GhaImport\PushRepositoryInterface;
+use App\Infrastructure\Doctrine\Repository\GhaImport\PullRequestRepository;
 
 final class CreatePullRequestFromImportLineCommandHandler
 {
-    public function __construct(PushRepositoryInterface $pullRequestRepository)
+    public function __construct(PullRequestRepository $pullRequestRepository)
     {
         $this->pullRequestRepository = $pullRequestRepository;
     }
