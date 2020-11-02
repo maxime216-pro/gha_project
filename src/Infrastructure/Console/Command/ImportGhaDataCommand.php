@@ -42,25 +42,25 @@ final class ImportGhaDataCommand extends Command
     {
         $this->setDescription('Trigger an import of GitHub Archive')
             ->setHelp('This command allows you to import GitHub archive. You are able to set the desired start date. Import from beginning if any date is specified.')
-            ->addOption('startDate', 's', InputOption::VALUE_OPTIONAL, "Import starting date (required format : 'Y-m-d H')");
+            ->addOption('startDate', 's', InputOption::VALUE_OPTIONAL, "Import starting date (required format : 'Y-m-d G')");
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $nowDate = new DateTime();
         if ($rawStartDate = $input->getOption('startDate')) {
-            $currentParsingDate = DateTime::createFromFormat('Y-m-d H', $rawStartDate);
+            $currentParsingDate = DateTime::createFromFormat('Y-m-d G', $rawStartDate);
         } else {
             // GitHub started to archive events at this date
-            $currentParsingDate = new DateTime('2020-11-01 00:00:00');
+            $currentParsingDate = new DateTime('2015-01-01 00:00:00');
         }
-        $output->writeln('start date is : ' . $currentParsingDate->format('Y-m-d H'));
+        $output->writeln('start date is : ' . $currentParsingDate->format('Y-m-d G'));
         try {
             while($currentParsingDate <= $nowDate) {
-                $output->writeln(sprintf('Processing archive for the date : %s', $currentParsingDate->format('Y-m-d-H')));
-                $response = $this->client->request('GET', sprintf('http://data.gharchive.org/%s.json.gz', $currentParsingDate->format('Y-m-d-H')));
+                $output->writeln(sprintf('Processing archive for the date : %s', $currentParsingDate->format('Y-m-d-G')));
+                $response = $this->client->request('GET', sprintf('http://data.gharchive.org/%s.json.gz', $currentParsingDate->format('Y-m-d-G')));
                 if ($response->getStatusCode() === 404) {
-                    $output->writeln(sprintf('Archive not found for the date : %s', $currentParsingDate->format('Y-m-d-H')));
+                    $output->writeln(sprintf('Archive not found for the date : %s', $currentParsingDate->format('Y-m-d-G')));
                     $currentParsingDate->modify('+1 hour'); // Be ready to get elements from the next hour
                     continue;
                 }

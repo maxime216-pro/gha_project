@@ -20,10 +20,12 @@ final class Commit
 
     final public function __construct(
         string $message,
-        string $commitId
+        string $commitId,
+        PushEvent $pushEvent
     ) {
         $this->message = $message;
         $this->commitId = $commitId;
+        $this->pushEvent = $pushEvent;
     }
 
     public function getMessage(): string
@@ -34,5 +36,10 @@ final class Commit
     public function getCommitId(): string
     {
         return $this->commitId;
+    }
+
+    public function getPushEvent(): PushEvent
+    {
+        return $this->pushEvent;
     }
 }
