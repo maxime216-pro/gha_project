@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Infrastructure\Console\Command;
 
-use App\Application\GhaImport\Command\CreateCommitCommentFromImportLineCommand;
+use App\Application\GhaImport\Command\CreateCommitFromImportLineCommand;
 use DateTime;
 use Exception;
 use Symfony\Component\Console\Command\Command;
@@ -64,12 +64,13 @@ final class ImportGhaDataCommand extends Command
                 for ($i = 0, $counter = count($data)-1; $i < $counter; ++$i) {
                     $decodedLine = json_decode($data[$i]);
                     if ('CommitCommentEvent' === $decodedLine->type) {
-                        $newLine = new CreateCommitCommentFromImportLineCommand(
+                        $newLine = new CreateCommitFromImportLineCommand(
                             new DateTime($decodedLine->payload->comment->created_at),
                             $decodedLine->payload->comment->body
                         );
-                        $this->commandBus->dispatch($newLine);
+                        
                     }
+                    $this->commandBus->dispatch($newLine);
                 }
 
                 $currentParsingDate->modify('+1 hour'); // Be ready to get elements from the next hour

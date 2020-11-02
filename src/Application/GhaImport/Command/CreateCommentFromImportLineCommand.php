@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\GhaImport\Command;
 
+use App\Domain\GhaImport\Importable;
 use DateTimeInterface;
 
-final class CreateCommentFromImportLineCommand
+final class CreateCommentFromImportLineCommand implements Importable
 {
     /** @var DateTimeInterface */
     public $createdAt;
