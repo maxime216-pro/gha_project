@@ -3,7 +3,7 @@ App\Application\GhaImport\Command\CreateCommentFromImportLineCommand:
         createdAt:
             - NotBlank: ~
             - Type: { type: DateTimeInterface }
-            - range:
+            - Range:
                 min: '2015-01-01'
                 max: 'now'
         repoName:

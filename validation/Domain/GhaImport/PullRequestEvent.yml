@@ -1,4 +1,4 @@
-App\Application\GhaImport\Command\CreatePullRequestFromImportLineCommand:
+App\Domain\GhaImport\PullRequestEvent:
     properties:
         createdAt:
             - NotBlank: ~

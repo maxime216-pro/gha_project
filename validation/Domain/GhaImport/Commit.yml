@@ -1,0 +1,11 @@
+App\Domain\GhaImport\Commit:
+    properties:
+        message:
+            - NotBlank: ~
+            - Type: { type: string }
+        commitId:
+            - NotBlank: ~
+            - Type: { type: string }
+        pushEvent:
+            - NotBlank: ~
+            - Type: { type: App\Domain\GhaImport\PushEvent }

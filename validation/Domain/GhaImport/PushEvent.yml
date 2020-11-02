@@ -1,4 +1,4 @@
-App\Application\GhaImport\Command\CreatePushFromImportLineCommand:
+App\Domain\GhaImport\PushEvent:
     properties:
         createdAt:
             - NotBlank: ~
@@ -10,4 +10,5 @@ App\Application\GhaImport\Command\CreatePushFromImportLineCommand:
             - NotBlank: ~
             - Type: { type: string }
         commits:
-            - Type: { type: array }
+            - Type: { type: App\Domain\GhaImport\Commit }
+            - Valid: ~

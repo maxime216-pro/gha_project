@@ -1,4 +1,4 @@
-App\Application\GhaImport\Command\CreatePullRequestFromImportLineCommand:
+App\Domain\GhaImport\Comment:
     properties:
         createdAt:
             - NotBlank: ~
@@ -10,10 +10,8 @@ App\Application\GhaImport\Command\CreatePullRequestFromImportLineCommand:
             - NotBlank: ~
             - Type: { type: string }
         message:
+            - NotBlank: ~
             - Type: { type: string }
-        numberOfCommits:
+        commitId:
             - NotBlank: ~
-            - Type: { type: int }
-        numberOfComments:
-            - NotBlank: ~
-            - Type: { type: int }
+            - Type: { type: string }

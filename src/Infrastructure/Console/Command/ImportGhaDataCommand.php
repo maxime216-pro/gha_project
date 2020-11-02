@@ -64,7 +64,7 @@ final class ImportGhaDataCommand extends Command
         }
         $output->writeln(sprintf('Process start at : %s', (new DateTime())->format('Y-m-d H:i:s')));
         $output->writeln('start date is : ' . $currentParsingDate->format('Y-m-d G'));
-        try {
+        // try {
             while($currentParsingDate <= $nowDate) {
                 $output->writeln(sprintf('Processing archive for the date : %s', $currentParsingDate->format('Y-m-d-G')));
                 $response = $this->client->request('GET', sprintf('http://data.gharchive.org/%s.json.gz', $currentParsingDate->format('Y-m-d-G')));
@@ -90,11 +90,11 @@ final class ImportGhaDataCommand extends Command
                 $output->writeln(sprintf('Processing done for this archive at : %s', (new DateTime())->format('Y-m-d H:i:s')));
                 $currentParsingDate->modify('+1 hour'); // Be ready to get elements from the next hour
             }
-        } catch(Exception $e) {
-            $output->writeln('Oops an error has occured : ' . $e->getMessage());
+        // } catch(Exception $e) {
+        //     $output->writeln('Oops an error has occured : ' . $e->getMessage());
 
-            throw $e;
-        }
+        //     throw $e;
+        // }
         $output->writeln(sprintf('Process end at : %s', (new DateTime())->format('Y-m-d H:i:s')));
 
         return 0;
