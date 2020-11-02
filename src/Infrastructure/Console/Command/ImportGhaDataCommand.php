@@ -6,6 +6,7 @@ namespace App\Infrastructure\Console\Command;
 
 use App\Domain\GhaImport\Service\GithubEventManagerInterface;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,6 +19,8 @@ final class ImportGhaDataCommand extends Command
 {
     protected static $defaultName = 'app:import:gha';
 
+    private const BATCH_SIZE = 50;
+
     /** @var HttpClientInterface */
     private $client;
 
@@ -27,15 +30,20 @@ final class ImportGhaDataCommand extends Command
     /** @var GithubEventManagerInterface */
     private $ghEventManager;
 
+    /** @var EntityManagerInterface */
+    private $em;
+
     public function __construct(
         HttpClientInterface $client,
         MessageBusInterface $commandBus,
-        GithubEventManagerInterface $ghEventManager
+        GithubEventManagerInterface $ghEventManager,
+        EntityManagerInterface $em
     ) {
         parent::__construct();
         $this->client = $client;
         $this->commandBus = $commandBus;
         $this->ghEventManager = $ghEventManager;
+        $this->em = $em;
     }
 
     protected function configure()
@@ -54,6 +62,7 @@ final class ImportGhaDataCommand extends Command
             // GitHub started to archive events at this date
             $currentParsingDate = new DateTime('2015-01-01 00:00:00');
         }
+        $output->writeln(sprintf('Process start at : %s', (new DateTime())->format('Y-m-d H:i:s')));
         $output->writeln('start date is : ' . $currentParsingDate->format('Y-m-d G'));
         try {
             while($currentParsingDate <= $nowDate) {
@@ -62,7 +71,7 @@ final class ImportGhaDataCommand extends Command
                 if ($response->getStatusCode() === 404) {
                     $output->writeln(sprintf('Archive not found for the date : %s', $currentParsingDate->format('Y-m-d-G')));
                     $currentParsingDate->modify('+1 hour'); // Be ready to get elements from the next hour
-                    continue;
+                    // continue;
                 }
                 $data = explode(PHP_EOL, gzdecode($response->getContent())); // Get an array of JSON element
                 // -1 because the last array's element is empty
@@ -71,8 +80,13 @@ final class ImportGhaDataCommand extends Command
                     if ($githubEvent = $this->ghEventManager->getEventFromImport($decodedLine)){
                         $this->commandBus->dispatch($githubEvent);
                     }
+                    if (($i % self::BATCH_SIZE) === 0) {
+                        $this->em->flush();
+                        $this->em->clear();
+                    }
                 }
-
+                $this->em->flush();
+                $this->em->clear();
                 $currentParsingDate->modify('+1 hour'); // Be ready to get elements from the next hour
             }
         } catch(Exception $e) {
@@ -80,6 +94,7 @@ final class ImportGhaDataCommand extends Command
 
             throw $e;
         }
+        $output->writeln(sprintf('Process end at : %s', (new DateTime())->format('Y-m-d H:i:s')));
 
         return 0;
     }
