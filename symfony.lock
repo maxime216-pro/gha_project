@@ -336,6 +336,9 @@
             "config/packages/test/monolog.yaml"
         ]
     },
+    "symfony/options-resolver": {
+        "version": "v4.4.16"
+    },
     "symfony/phpunit-bridge": {
         "version": "4.3",
         "recipe": {

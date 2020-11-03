@@ -24,6 +24,18 @@ final class PushRepository extends AbstractDoctrineRepository implements PushRep
 
     public function findByDateAndKeyword(\DateTimeInterface $dateFilter, string $keyword): ?Collection
     {
-
+        return $this
+            ->entityManager
+            ->createQueryBuilder()
+            ->select('repoName', 'commit.message', 'commit.commitId')
+            ->from(PushEvent::class, 'push')
+            ->join('push.commits', 'commit', 'ON', 'commit.pushEvent = push')
+            ->where('DATE_FORMAT(push.createdAt, \'%Y-%m-%d\' = :dateFilter')
+            ->andWhere('push.commits. LIKE :keywordFilter')
+            ->setParameter('dateFilter', $dateFilter->format('Y-m-d'))
+            ->setParameter('keyword', $keyword)
+            ->orderBy('push.createdAt')
+            ->getQuery()
+            ->getResult();
     }
 }

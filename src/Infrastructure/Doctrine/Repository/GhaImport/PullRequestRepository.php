@@ -24,6 +24,17 @@ final class PullRequestRepository extends AbstractDoctrineRepository implements 
 
     public function findByDateAndKeyword(\DateTimeInterface $dateFilter, string $keyword): ?Collection
     {
-
+        return $this
+            ->entityManager
+            ->createQueryBuilder()
+            ->select('repoName', 'message', 'numberOfCommits', 'numberOfComments')
+            ->from(PullRequestEvent::class, 'pull_request')
+            ->where('DATE_FORMAT(pull_request.createdAt, \'%Y-%m-%d\' = :dateFilter')
+            ->andWhere('pull_request.message LIKE :keywordFilter')
+            ->setParameter('dateFilter', $dateFilter->format('Y-m-d'))
+            ->setParameter('keyword', $keyword)
+            ->orderBy('pull_request.createdAt')
+            ->getQuery()
+            ->getResult();
     }
 }

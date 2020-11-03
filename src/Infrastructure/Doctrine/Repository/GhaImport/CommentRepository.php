@@ -24,6 +24,17 @@ final class CommentRepository extends AbstractDoctrineRepository implements Comm
 
     public function findByDateAndKeyword(\DateTimeInterface $dateFilter, string $keyword): ?Collection
     {
-
+        return $this
+            ->entityManager
+            ->createQueryBuilder()
+            ->select('createdAt', 'repoName', 'message', 'commitId')
+            ->from(Comment::class, 'comment')
+            ->where('DATE_FORMAT(comment.createdAt, \'%Y-%m-%d\' = :dateFilter')
+            ->andWhere('comment.message LIKE :keywordFilter')
+            ->setParameter('dateFilter', $dateFilter->format('Y-m-d'))
+            ->setParameter('keyword', $keyword)
+            ->orderBy('comment.createdAt')
+            ->getQuery()
+            ->getResult();
     }
 }
