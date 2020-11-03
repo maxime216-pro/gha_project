@@ -50,11 +50,13 @@ final class GithubEventManager implements GithubEventManagerInterface
      * A push must contains at least one commit..
      */
     private function handleCommits(array $commits) {
-        return array_map(function($commit) {
-            return new CommitDto(
-                $commit->message,
-                $commit->sha
-            );
-        }, $commits);
+        return array_filter($commits, function($commit) {
+            if (true === $commit->distinct) {
+                return new CommitDto(
+                    $commit->message,
+                    $commit->sha
+                );
+            }
+        });
     }
 }
