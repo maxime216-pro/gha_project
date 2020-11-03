@@ -39,7 +39,7 @@ final class CreatePushFromImportLineCommandHandler
             foreach ($command->commits as $commitDto) {
                 $commit = new Commit(
                     $commitDto->message,
-                    $commitDto->commitId,
+                    property_exists($commitDto, 'commitId') ? $commitDto->commitId : '',
                     $pushEvent
                 );
                 $this->commitRepository->add($commit);

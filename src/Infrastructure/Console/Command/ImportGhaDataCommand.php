@@ -65,13 +65,13 @@ final class ImportGhaDataCommand extends Command
         $output->writeln(sprintf('Process start at : %s', (new DateTime())->format('Y-m-d H:i:s')));
         $output->writeln('start date is : ' . $currentParsingDate->format('Y-m-d G'));
         try {
-            while($currentParsingDate <= $nowDate) {
+            while($currentParsingDate->format('Y-m-d-G') < $nowDate->format('Y-m-d-G')) {
                 $output->writeln(sprintf('Processing archive for the date : %s', $currentParsingDate->format('Y-m-d-G')));
                 $response = $this->client->request('GET', sprintf('http://data.gharchive.org/%s.json.gz', $currentParsingDate->format('Y-m-d-G')));
                 if ($response->getStatusCode() === 404) {
                     $output->writeln(sprintf('Archive not found for the date : %s', $currentParsingDate->format('Y-m-d-G')));
                     $currentParsingDate->modify('+1 hour'); // Be ready to get elements from the next hour
-                    // continue;
+                    continue;
                 }
                 $data = explode(PHP_EOL, gzdecode($response->getContent())); // Get an array of JSON element
                 // -1 because the last array's element is empty
