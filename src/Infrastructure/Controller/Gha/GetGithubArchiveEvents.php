@@ -15,9 +15,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class GetGithubArchiveEvents extends AbstractController
 {
-    /** @var array */
-    private $payload = [];
-
     /** @var MessageBusInterface */
     private $queryBus;
 
@@ -26,7 +23,7 @@ final class GetGithubArchiveEvents extends AbstractController
         $this->queryBus = $queryBus;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): JsonResponse
     {
         $payload = $this->getPayload($request);
         $dateAndKeywordFilterQuery = new DateAndKeywordFilterQuery($payload['eventDate'], $payload['keyword']);
@@ -63,7 +60,7 @@ final class GetGithubArchiveEvents extends AbstractController
     private function configurePayload(OptionsResolver $resolver): void
     {
         $resolver
-            ->setRequired('eventDate')->setAllowedTypes('event_date', 'string')
+            ->setRequired('eventDate')->setAllowedTypes('eventDate', 'string')
             ->setRequired('keyword')->setAllowedTypes('keyword', 'string')
         ;
     }

@@ -16,10 +16,10 @@ final class DateAndKeywordFilterQuery
     public $dateFilter;
 
     public function __construct(
-        string $keywordFilter,
-        string $dateFilter
+        string $dateFilter,
+        string $keywordFilter
     ) {
-      $this->keywordFilter = $keywordFilter;
-      $this->dateFilter = new DateTime($dateFilter);  
+      $this->dateFilter = new DateTime($dateFilter);
+      $this->keywordFilter = $keywordFilter; 
     }
 }

@@ -1,5 +1,5 @@
-api_commit_comments:
-    path: /api/commit-comments
-    controller: App\Infrastructure\Controller\GHA\GetGithubArchiveEvents
+api_github_events:
+    path: /api/github-events
+    controller: App\Infrastructure\Controller\Gha\GetGithubArchiveEvents
     methods: ['POST']
     host: "%api_host%"
