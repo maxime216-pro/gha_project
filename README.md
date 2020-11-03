@@ -24,6 +24,6 @@ Then, you've got nothing to do except :
 
 Then you can launch the data import from GithubArchive with the following command :
 `php bin/console app:import:gha`
-This might take a long moment to import all data. Just be patient 🧘
+This might take a long moment to import all data. Just be patient 🧘 (I recommand to disable any xdebug / blackfire to avoid ruining perfs and also to set env=PROD)
 
-Once you're done, WIP
+Once you're done, all GitHub Event of type `PullRequestEvent`, `PushEvent` and `CommitCommentEvent` will be in your database.

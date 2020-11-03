@@ -74,7 +74,7 @@ class GithubEventManagerTest extends TestCase
                 'comment' => (object)[
                     'body' => 'A nice comment this time :)',
                     'commit_id' => 'zxcv9876',
-                    'created_at' => '2025-01-01T12:00:01Z',
+                    'created_at' => '2018-01-01T12:00:01Z',
                 ],
             ])
         ]);
