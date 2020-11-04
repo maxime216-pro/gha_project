@@ -7,7 +7,6 @@ namespace App\Infrastructure\Doctrine\Repository\GhaImport;
 use App\Domain\GhaImport\PullRequestEvent;
 use App\Domain\GhaImport\PullRequestRepositoryInterface;
 use App\Infrastructure\Doctrine\Repository\AbstractDoctrineRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class PullRequestRepository extends AbstractDoctrineRepository implements PullRequestRepositoryInterface
@@ -22,18 +21,20 @@ final class PullRequestRepository extends AbstractDoctrineRepository implements 
         $this->entityManager->persist($pullRequestEvent);
     }
 
-    public function findByDateAndKeyword(\DateTimeInterface $dateFilter, string $keyword): ?Collection
+    public function findByDateAndKeyword(\DateTimeInterface $dateFilter, string $keyword): array
     {
         return $this
             ->entityManager
             ->createQueryBuilder()
-            ->select('repoName', 'message', 'numberOfCommits', 'numberOfComments')
-            ->from(PullRequestEvent::class, 'pull_request')
-            ->where('DATE_FORMAT(pull_request.createdAt, \'%Y-%m-%d\' = :dateFilter')
-            ->andWhere('pull_request.message LIKE :keywordFilter')
+            ->select('pr.createdAt', 'pr.repoName', 'pr.message', 'pr.numberOfCommits', 'pr.numberOfComments')
+            ->from(PullRequestEvent::class, 'pr')
+            ->where('pr.createdAt >= :dateFilter')
+            ->andWhere('pr.createdAt < :upperDateFilter')
+            ->andWhere('pr.message LIKE :keywordFilter')
             ->setParameter('dateFilter', $dateFilter->format('Y-m-d'))
-            ->setParameter('keyword', $keyword)
-            ->orderBy('pull_request.createdAt')
+            ->setParameter('upperDateFilter', date_modify($dateFilter, '+1 day')->format('Y-m-d'))
+            ->setParameter('keywordFilter', '%'.$keyword.'%')
+            ->orderBy('pr.createdAt')
             ->getQuery()
             ->getResult();
     }

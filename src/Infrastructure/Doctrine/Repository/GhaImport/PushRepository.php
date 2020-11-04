@@ -22,19 +22,21 @@ final class PushRepository extends AbstractDoctrineRepository implements PushRep
         $this->entityManager->persist($pushEvent);
     }
 
-    public function findByDateAndKeyword(\DateTimeInterface $dateFilter, string $keyword): ?Collection
+    public function findByDateAndKeyword(\DateTimeInterface $dateFilter, string $keyword): array
     {
         return $this
             ->entityManager
             ->createQueryBuilder()
-            ->select('repoName', 'commit.message', 'commit.commitId')
-            ->from(PushEvent::class, 'push')
-            ->join('push.commits', 'commit', 'ON', 'commit.pushEvent = push')
-            ->where('DATE_FORMAT(push.createdAt, \'%Y-%m-%d\' = :dateFilter')
-            ->andWhere('push.commits. LIKE :keywordFilter')
+            ->select('p.createdAt', 'p.repoName', 'commit.message', 'commit.commitId')
+            ->from(PushEvent::class, 'p')
+            ->join('p.commits', 'commit')
+            ->where('p.createdAt >= :dateFilter')
+            ->andWhere('p.createdAt < :upperDateFilter')
+            ->andWhere('commit.message LIKE :keywordFilter')
             ->setParameter('dateFilter', $dateFilter->format('Y-m-d'))
-            ->setParameter('keyword', $keyword)
-            ->orderBy('push.createdAt')
+            ->setParameter('upperDateFilter', date_modify($dateFilter, '+1 day')->format('Y-m-d'))
+            ->setParameter('keywordFilter', '%'.$keyword.'%')
+            ->orderBy('p.createdAt')
             ->getQuery()
             ->getResult();
     }

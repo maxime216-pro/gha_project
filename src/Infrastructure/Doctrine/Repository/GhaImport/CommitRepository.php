@@ -21,9 +21,4 @@ final class CommitRepository extends AbstractDoctrineRepository implements Commi
     {
         $this->entityManager->persist($commit);
     }
-
-    public function findByDateAndKeyword(\DateTimeInterface $dateFilter, string $keyword): ?Collection
-    {
-
-    }
 }

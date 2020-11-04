@@ -37,7 +37,6 @@ final class DateAndKeywordFilterQueryHandler
         $comments = $this->commentRepo->findByDateAndKeyword($dateAndKeywordFilter->dateFilter, $dateAndKeywordFilter->keywordFilter);
         $pullRequest = $this->pullRequestRepo->findByDateAndKeyword($dateAndKeywordFilter->dateFilter, $dateAndKeywordFilter->keywordFilter);
         $pushs = $this->pushRepo->findByDateAndKeyword($dateAndKeywordFilter->dateFilter, $dateAndKeywordFilter->keywordFilter);
-
         return $this->presentResult(
             $comments,
             $pullRequest,
@@ -48,9 +47,9 @@ final class DateAndKeywordFilterQueryHandler
     }
 
     public function presentResult(
-        Collection $comments,
-        Collection $pullRequest,
-        Collection $pushs,
+        array $comments,
+        array $pullRequest,
+        array $pushs,
         DateTimeInterface $dateFilter,
         string $keyword
     ): array
@@ -59,7 +58,7 @@ final class DateAndKeywordFilterQueryHandler
             'comments' => $comments,
             'pull_requests' => $pullRequest,
             'pushs' => $pushs,
-            'number_of_commits' => array_reduce($pushs->toArray(), function($curr, $push) {
+            'number_of_commits' => array_reduce($pushs, function($curr, $push) {
                 $curr += \count($push->getCommit());
             }, 0),
             'number_of_pull_requests' => \count($pullRequest),
