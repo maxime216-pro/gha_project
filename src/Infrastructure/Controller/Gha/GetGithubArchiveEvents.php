@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\OptionsResolver\Exception\ExceptionInterface as OptionsResolverExceptionInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -23,15 +24,13 @@ final class GetGithubArchiveEvents extends AbstractController
         $this->queryBus = $queryBus;
     }
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request)
     {
         $payload = $this->getPayload($request);
         $dateAndKeywordFilterQuery = new DateAndKeywordFilterQuery($payload['eventDate'], $payload['keyword']);
         $viewModel = $this->queryBus->dispatch($dateAndKeywordFilterQuery);
-
-        return new JsonResponse($viewModel);
+        return new JsonResponse($viewModel->last(HandledStamp::class)->getResult());
     }
-
     private function getPayload(Request $request): array
     {
         $content = $request->getContent();

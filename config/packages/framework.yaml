@@ -21,3 +21,5 @@ framework:
         mapping:
             path:
                 - '%kernel.project_dir%/validation'
+
+    serializer: true

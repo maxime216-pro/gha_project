@@ -1,0 +1,8 @@
+App\Application\GhaImport\Query\DateAndKeywordFilterQuery:
+    properties:
+        dateFilter:
+            - NotBlank: ~
+            - Type: { type: string }
+        keywordFilter:
+            - NotBlank: ~
+            - Type: { type: string }

@@ -27,7 +27,7 @@ final class PushRepository extends AbstractDoctrineRepository implements PushRep
         return $this
             ->entityManager
             ->createQueryBuilder()
-            ->select('p.createdAt', 'p.repoName', 'commit.message', 'commit.commitId')
+            ->select('p', 'commit')
             ->from(PushEvent::class, 'p')
             ->join('p.commits', 'commit')
             ->where('p.createdAt >= :dateFilter')
