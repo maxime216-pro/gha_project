@@ -40,6 +40,7 @@ string  `keyword`
 
 ## Tests
 If you want to run tests, dont forget to create a database where you run migrations. then dont forget to provide a `DATABASE_URL` for the `test` env.
-simply run `vendor/bin/phpunit` for that.
+
+After that, simply run `vendor/bin/phpunit` to trigger the test suit.
 
 Enjoy :)
