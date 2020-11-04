@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Infrastructure\GhaImport\Service;
+namespace App\Tests\Unit\Infrastructure\GhaImport\Service;
 
 use App\Application\GhaImport\Command\CreateCommentFromImportLineCommand;
 use App\Application\GhaImport\Command\CreatePullRequestFromImportLineCommand;

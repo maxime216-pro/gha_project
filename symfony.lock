@@ -23,6 +23,9 @@
     "doctrine/common": {
         "version": "3.0.2"
     },
+    "doctrine/data-fixtures": {
+        "version": "1.4.4"
+    },
     "doctrine/dbal": {
         "version": "2.12.0"
     },
@@ -39,6 +42,18 @@
             "config/packages/prod/doctrine.yaml",
             "src/Entity/.gitignore",
             "src/Repository/.gitignore"
+        ]
+    },
+    "doctrine/doctrine-fixtures-bundle": {
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "e5b542d4ef47d8a003c91beb35650c76907f7e53"
+        },
+        "files": [
+            "src/DataFixtures/AppFixtures.php"
         ]
     },
     "doctrine/doctrine-migrations-bundle": {
@@ -78,6 +93,9 @@
     "doctrine/sql-formatter": {
         "version": "1.1.1"
     },
+    "fakerphp/faker": {
+        "version": "v1.10.1"
+    },
     "laminas/laminas-code": {
         "version": "3.4.1"
     },
@@ -92,6 +110,19 @@
     },
     "myclabs/deep-copy": {
         "version": "1.10.1"
+    },
+    "nelmio/alice": {
+        "version": "3.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.2",
+            "ref": "0b9900ece737bec7752e4155c0164639dd9b0cb0"
+        },
+        "files": [
+            "config/packages/dev/nelmio_alice.yaml",
+            "config/packages/test/nelmio_alice.yaml"
+        ]
     },
     "nikic/php-parser": {
         "version": "v4.10.2"
@@ -206,6 +237,9 @@
     "sebastian/version": {
         "version": "3.0.2"
     },
+    "symfony/browser-kit": {
+        "version": "v4.4.16"
+    },
     "symfony/cache": {
         "version": "v4.4.16"
     },
@@ -228,6 +262,9 @@
             "config/bootstrap.php"
         ]
     },
+    "symfony/css-selector": {
+        "version": "v4.4.16"
+    },
     "symfony/debug": {
         "version": "v4.4.16"
     },
@@ -235,6 +272,9 @@
         "version": "v4.4.16"
     },
     "symfony/doctrine-bridge": {
+        "version": "v4.4.16"
+    },
+    "symfony/dom-crawler": {
         "version": "v4.4.16"
     },
     "symfony/dotenv": {
@@ -425,6 +465,15 @@
     },
     "symfony/yaml": {
         "version": "v4.4.16"
+    },
+    "theofidry/alice-data-fixtures": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "fe5a50faf580eb58f08ada2abe8afbd2d4941e05"
+        }
     },
     "theseer/tokenizer": {
         "version": "1.2.0"

@@ -25,3 +25,4 @@ gha_project.code-workspace
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+.env.test

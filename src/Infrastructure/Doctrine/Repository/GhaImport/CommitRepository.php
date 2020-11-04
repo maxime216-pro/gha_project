@@ -7,7 +7,6 @@ namespace App\Infrastructure\Doctrine\Repository\GhaImport;
 use App\Domain\GhaImport\Commit;
 use App\Domain\GhaImport\CommitRepositoryInterface;
 use App\Infrastructure\Doctrine\Repository\AbstractDoctrineRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class CommitRepository extends AbstractDoctrineRepository implements CommitRepositoryInterface

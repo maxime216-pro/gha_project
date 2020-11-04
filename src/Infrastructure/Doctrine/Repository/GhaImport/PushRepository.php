@@ -7,7 +7,6 @@ namespace App\Infrastructure\Doctrine\Repository\GhaImport;
 use App\Domain\GhaImport\PushEvent;
 use App\Domain\GhaImport\PushRepositoryInterface;
 use App\Infrastructure\Doctrine\Repository\AbstractDoctrineRepository;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class PushRepository extends AbstractDoctrineRepository implements PushRepositoryInterface

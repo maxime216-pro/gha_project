@@ -27,3 +27,18 @@ Then you can launch the data import from GithubArchive with the following comman
 This might take a long moment to import all data. Just be patient 🧘 (I recommand to disable any xdebug / blackfire to avoid ruining perfs and also to set env=PROD)
 
 Once you're done, all GitHub Event of type `PullRequestEvent`, `PushEvent` and `CommitCommentEvent` will be in your database.
+
+Then, you'll be able to run a local server as instance and ask your API with the tool you want.
+Just call the following route :
+`POST yourhost/api/github-events`
+**required params**
+```
+string  `eventDate` (format: 'Y-m-d')
+string  `keyword`
+```
+
+## Tests
+If you want to run tests, dont forget to create a database where you run migrations. then dont forget to provide a `DATABASE_URL` for the `test` env.
+simply run `vendor/bin/phpunit` for that.
+
+Enjoy :)

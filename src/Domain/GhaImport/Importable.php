@@ -7,7 +7,4 @@ namespace App\Domain\GhaImport;
 /**
  * Gha Event Dto must implements this interface to process the import
  */
-interface Importable
-{
-
-}
+interface Importable {}
